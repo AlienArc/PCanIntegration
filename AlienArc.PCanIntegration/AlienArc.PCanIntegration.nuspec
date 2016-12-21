@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package >
+	<metadata>
+		<id>$id$</id>
+		<version>$version$</version>
+		<title>Alien Arc Peak Canbus Integration</title>
+		<authors>PEAK System/Alien Arc Technologies, LLC</authors>
+		<owners>Alien Arc Technologies, LLC</owners>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<description>A convenience package for the PEAK System CANBUS native dll and .NET wrapper</description>
+		<releaseNotes>Initial version</releaseNotes>
+		<copyright>Copyright 2016</copyright>
+		<tags>CANBUS PCAN PEAK CAN</tags>
+		<!--<references>
+			<reference file="AlienArc.PCanIntegration.dll" />
+		</references>-->
+	</metadata>
+	<files>
+		<file src="..\ThirdParty\x64\PCANBasic.dll" target="binaries\PCANBasic.dll" />
+		<file src="AlienArc.PCanIntegration.targets" target="build" />
+	</files>
+</package>

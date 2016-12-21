@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<Target Name="CopyBinaries" BeforeTargets="BeforeBuild">
+		<CreateItem Include="$(MSBuildThisFileDirectory)..\binaries\**\*.*">
+			<Output TaskParameter="Include" ItemName="PackageBinaries" />
+		</CreateItem>
+
+		<Copy SourceFiles="@(PackageBinaries)"
+              DestinationFolder="$(OutputPath)"
+              SkipUnchangedFiles="true"
+              OverwriteReadOnlyFiles="true"
+        />
+	</Target>
+</Project>
