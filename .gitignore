@@ -250,3 +250,7 @@ ModelManifest.xml
 /Clean DB.sql
 /SQLQuery2.sql
 /src/Isei.Web/Data
+
+#CAKE
+tools/*
+!tools/packages.config

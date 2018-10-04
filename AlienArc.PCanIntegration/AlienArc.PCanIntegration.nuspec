@@ -1,22 +1,27 @@
 <?xml version="1.0"?>
 <package >
 	<metadata>
-		<id>$id$</id>
+		<id>AlienArc.PCanIntegration</id>
 		<version>$version$</version>
 		<title>Alien Arc Peak Canbus Integration</title>
 		<authors>PEAK System/Alien Arc Technologies, LLC</authors>
 		<owners>Alien Arc Technologies, LLC</owners>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
-		<description>A convenience package for the PEAK System CANBUS native dll and .NET wrapper</description>
+		<description>A convenience package for the PEAK System CANBUS native dll and .NET wrapper for the PCANBasic library provided by PEAK System</description>
 		<releaseNotes>Initial version</releaseNotes>
 		<copyright>Copyright 2016</copyright>
 		<tags>CANBUS PCAN PEAK CAN</tags>
-		<!--<references>
-			<reference file="AlienArc.PCanIntegration.dll" />
-		</references>-->
 	</metadata>
 	<files>
-		<file src="..\ThirdParty\x64\PCANBasic.dll" target="binaries\PCANBasic.dll" />
-		<file src="AlienArc.PCanIntegration.targets" target="build" />
+    <file src="..\ThirdParty\x64\PCANBasic.dll" target="binaries\x64\PCANBasic.dll" />
+    <file src="..\ThirdParty\Win32\PCANBasic.dll" target="binaries\x86\PCANBasic.dll" />
+
+		<file src="AlienArc.PCanIntegration.targets" target="build\net45" />
+	  <file src="AlienArc.PCanIntegration.props" target="build\net45" />
+
+    <file src="bin\Release\x64\AlienArc.PCanIntegration.*" target="build\x64" />
+    <file src="bin\Release\x86\AlienArc.PCanIntegration.*" target="build\x86" />
+    <file src="bin\Release\x86\AlienArc.PCanIntegration.*" target="lib\net45" />
+
 	</files>
 </package>
