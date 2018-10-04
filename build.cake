@@ -1,3 +1,5 @@
+#addin "nuget:?package=NuGet.Core"
+
 ///////////////////////////////////////////////////////////////////////////////
 // ARGUMENTS
 ///////////////////////////////////////////////////////////////////////////////
@@ -5,11 +7,13 @@
 var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Release");
 var buildNumber = Argument("buildNumber", 0);
+var targetPath = Argument("targetPath", @".\nuget");
 
 ///////////////////////////////////////////////////////////////////////////////
 // SETUP / TEARDOWN
 ///////////////////////////////////////////////////////////////////////////////
 
+var solution = @".\AlienArc.PCanIntegration.sln";
 var csproj = @".\AlienArc.PCanIntegration\AlienArc.PCanIntegration.csproj";
 var nuspec = @".\AlienArc.PCanIntegration\AlienArc.PCanIntegration.nuspec";
 var pcanVersionFile = @".\PCanBasicVersion.txt";
@@ -28,7 +32,13 @@ Teardown(ctx =>
 // TASKS
 ///////////////////////////////////////////////////////////////////////////////
 
-Task("Default")
+Task("RestorePackages")
+.Does(() => {
+    NuGetRestore(solution);
+});
+
+Task("Build")
+    .IsDependentOn("RestorePackages")
 .Does(() => {
 
     var pcanVersion = System.IO.File.ReadAllText(pcanVersionFile);
@@ -48,8 +58,12 @@ Task("Default")
 
     var nupackSettings = new NuGetPackSettings();
     nupackSettings.Version = nugetVersion;
-    nupackSettings.OutputDirectory = @".\nuget";
+    nupackSettings.OutputDirectory = targetPath;
     NuGetPack(nuspec, nupackSettings);
 });
+
+Task("Default")
+    .IsDependentOn("RestorePackages")
+    .IsDependentOn("Build");
 
 RunTarget(target);
