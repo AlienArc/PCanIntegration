@@ -6,24 +6,22 @@ var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Release");
 var buildNumber = Argument("buildNumber", 0);
 
-var csproj = @".\AlienArc.PCanIntegration\AlienArc.PCanIntegration.csproj";
-var nuspec = @".\AlienArc.PCanIntegration\AlienArc.PCanIntegration.nuspec";
-var pcanVersionFile = @".\PCanBasicVersion.txt";
-
 ///////////////////////////////////////////////////////////////////////////////
 // SETUP / TEARDOWN
 ///////////////////////////////////////////////////////////////////////////////
 
+var csproj = @".\AlienArc.PCanIntegration\AlienArc.PCanIntegration.csproj";
+var nuspec = @".\AlienArc.PCanIntegration\AlienArc.PCanIntegration.nuspec";
+var pcanVersionFile = @".\PCanBasicVersion.txt";
+
 Setup(ctx =>
 {
    // Executed BEFORE the first task.
-   Information("Running tasks...");
 });
 
 Teardown(ctx =>
 {
    // Executed AFTER the last task.
-   Information("Finished running tasks.");
 });
 
 ///////////////////////////////////////////////////////////////////////////////
