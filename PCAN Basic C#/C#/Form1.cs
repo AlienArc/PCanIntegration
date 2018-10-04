@@ -154,6 +154,9 @@ namespace ICDIBasic
                 if ((m_Msg.MSGTYPE & TPCANMessageType.PCAN_MESSAGE_STATUS) == TPCANMessageType.PCAN_MESSAGE_STATUS)
                     return "STATUS";
 
+                if ((m_Msg.MSGTYPE & TPCANMessageType.PCAN_MESSAGE_ERRFRAME) == TPCANMessageType.PCAN_MESSAGE_ERRFRAME)
+                    return "ERROR";
+
                 if ((m_Msg.MSGTYPE & TPCANMessageType.PCAN_MESSAGE_EXTENDED) == TPCANMessageType.PCAN_MESSAGE_EXTENDED)
                     strTemp = "EXT";
                 else
@@ -918,9 +921,10 @@ namespace ICDIBasic
             // Activates/deactivates controls according with the selected 
             // PCAN-Basic parameter 
             //
-            rdbParamActive.Enabled = cbbParameter.SelectedIndex != 0;
+            rdbParamActive.Enabled = (cbbParameter.SelectedIndex != 0) && (cbbParameter.SelectedIndex != 20);
             rdbParamInactive.Enabled = rdbParamActive.Enabled;
-            nudDeviceId.Enabled = !rdbParamActive.Enabled;
+            nudDeviceIdOrDelay.Enabled = !rdbParamActive.Enabled;
+            laDeviceOrDelay.Text = (cbbParameter.SelectedIndex == 20) ? "Delay (μs):" : "Device ID:";
         }
         #endregion
 
@@ -1126,7 +1130,7 @@ namespace ICDIBasic
                 // The Device-Number of an USB channel will be set
                 //
                 case 0:
-                    iBuffer = Convert.ToUInt32(nudDeviceId.Value);
+                    iBuffer = Convert.ToUInt32(nudDeviceIdOrDelay.Value);
                     stsResult = PCANBasic.SetValue(m_PcanHandle, TPCANParameter.PCAN_DEVICE_NUMBER, ref iBuffer, sizeof(UInt32));
                     if (stsResult == TPCANStatus.PCAN_ERROR_OK)
                         IncludeTextMessage("The desired Device-Number was successfully configured");
@@ -1196,6 +1200,42 @@ namespace ICDIBasic
                     stsResult = PCANBasic.SetValue(m_PcanHandle, TPCANParameter.PCAN_BITRATE_ADAPTING, ref iBuffer, sizeof(UInt32));
                     if (stsResult == TPCANStatus.PCAN_ERROR_OK)
                         IncludeTextMessage(string.Format("The feature for bit rate adaptation was successfully {0}", bActivate ? "activated" : "deactivated"));
+                    break;
+                
+                // The option "Allow Status Frames" will be set
+                //
+                case 17:
+                    iBuffer = (uint)(bActivate ? PCANBasic.PCAN_PARAMETER_ON : PCANBasic.PCAN_PARAMETER_OFF);
+                    stsResult = PCANBasic.SetValue(m_PcanHandle, TPCANParameter.PCAN_ALLOW_STATUS_FRAMES, ref iBuffer, sizeof(UInt32));
+                    if (stsResult == TPCANStatus.PCAN_ERROR_OK)
+                        IncludeTextMessage(string.Format("The reception of Status frames was successfully {0}", bActivate ? "enabled" : "disabled"));
+                    break;
+
+                // The option "Allow RTR Frames" will be set
+                //
+                case 18:
+                    iBuffer = (uint)(bActivate ? PCANBasic.PCAN_PARAMETER_ON : PCANBasic.PCAN_PARAMETER_OFF);
+                    stsResult = PCANBasic.SetValue(m_PcanHandle, TPCANParameter.PCAN_ALLOW_RTR_FRAMES, ref iBuffer, sizeof(UInt32));
+                    if (stsResult == TPCANStatus.PCAN_ERROR_OK)
+                        IncludeTextMessage(string.Format("The reception of RTR frames was successfully {0}", bActivate ? "enabled" : "disabled"));
+                    break;
+
+                // The option "Allow Error Frames" will be set
+                //
+                case 19:
+                    iBuffer = (uint)(bActivate ? PCANBasic.PCAN_PARAMETER_ON : PCANBasic.PCAN_PARAMETER_OFF);
+                    stsResult = PCANBasic.SetValue(m_PcanHandle, TPCANParameter.PCAN_ALLOW_ERROR_FRAMES, ref iBuffer, sizeof(UInt32));
+                    if (stsResult == TPCANStatus.PCAN_ERROR_OK)
+                        IncludeTextMessage(string.Format("The reception of Error frames was successfully {0}", bActivate ? "enabled" : "disabled"));
+                    break;
+
+                // The option "Interframes Delay" will be set
+                //
+                case 20:
+                    iBuffer = Convert.ToUInt32(nudDeviceIdOrDelay.Value);
+                    stsResult = PCANBasic.SetValue(m_PcanHandle, TPCANParameter.PCAN_INTERFRAME_DELAY, ref iBuffer, sizeof(UInt32));
+                    if (stsResult == TPCANStatus.PCAN_ERROR_OK)
+                        IncludeTextMessage("The delay between transmitting frames was successfully set");
                     break;
 
                 // The current parameter is invalid
@@ -1291,7 +1331,11 @@ namespace ICDIBasic
                 case 9:
                     stsResult = PCANBasic.GetValue(m_PcanHandle, TPCANParameter.PCAN_CHANNEL_FEATURES, out iBuffer, sizeof(UInt32));
                     if (stsResult == TPCANStatus.PCAN_ERROR_OK)
+                    {
                         IncludeTextMessage(string.Format("The channel {0} Flexible Data-Rate (CAN-FD)", ((iBuffer & PCANBasic.FEATURE_FD_CAPABLE) == PCANBasic.FEATURE_FD_CAPABLE) ? "does support" : "DOESN'T SUPPORT"));
+                        IncludeTextMessage(string.Format("The channel {0} an inter-frame delay for sending messages", ((iBuffer & PCANBasic.FEATURE_DELAY_CAPABLE) == PCANBasic.FEATURE_DELAY_CAPABLE) ? "does support" : "DOESN'T SUPPORT"));
+                        IncludeTextMessage(string.Format("The channel {0} using I/O pins", ((iBuffer & PCANBasic.FEATURE_IO_CAPABLE) == PCANBasic.FEATURE_IO_CAPABLE) ? "does allow" : "DOESN'T ALLOW"));
+                    }
                     break;
                 // The status of the speed adapting feature will be retrieved
                 //
@@ -1312,7 +1356,11 @@ namespace ICDIBasic
                 case 12:
                     stsResult = PCANBasic.GetValue(m_PcanHandle, TPCANParameter.PCAN_BITRATE_INFO_FD, strBuffer, 255);
                     if (stsResult == TPCANStatus.PCAN_ERROR_OK)
-                        IncludeTextMessage(string.Format("The bit rate of the channel is {0}", strBuffer.ToString()));
+                    {
+                        IncludeTextMessage("The bit rate FD of the channel is represented by the following values:");
+                        foreach(string strPart in strBuffer.ToString().Split(','))
+                            IncludeTextMessage("   * " + strPart);
+                    }
                     break;
                 // The nominal speed configured on the CAN bus
                 //
@@ -1336,10 +1384,39 @@ namespace ICDIBasic
                         IncludeTextMessage(string.Format("The IP address of the channel is {0}", strBuffer.ToString()));
                     break;
                 // The running status of the LAN Service
+                //
                 case 16:
                     stsResult = PCANBasic.GetValue(PCANBasic.PCAN_NONEBUS, TPCANParameter.PCAN_LAN_SERVICE_STATUS, out iBuffer, sizeof(UInt32));
                     if (stsResult == TPCANStatus.PCAN_ERROR_OK)
                         IncludeTextMessage(string.Format("The LAN service is {0}", (iBuffer == PCANBasic.SERVICE_STATUS_RUNNING) ? "running" : "NOT running"));
+                    break;
+                // The reception of Status frames
+                //
+                case 17:
+                    stsResult = PCANBasic.GetValue(m_PcanHandle, TPCANParameter.PCAN_ALLOW_STATUS_FRAMES, out iBuffer, sizeof(UInt32));
+                    if (stsResult == TPCANStatus.PCAN_ERROR_OK)
+                        IncludeTextMessage(string.Format("The reception of Status frames is {0}", (iBuffer == PCANBasic.PCAN_PARAMETER_ON) ? "enabled" : "disabled"));
+                    break;
+                // The reception of RTR frames
+                //
+                case 18:
+                    stsResult = PCANBasic.GetValue(m_PcanHandle, TPCANParameter.PCAN_ALLOW_RTR_FRAMES, out iBuffer, sizeof(UInt32));
+                    if (stsResult == TPCANStatus.PCAN_ERROR_OK)
+                        IncludeTextMessage(string.Format("The reception of RTR frames is {0}", (iBuffer == PCANBasic.PCAN_PARAMETER_ON) ? "enabled" : "disabled"));
+                    break;
+                // The reception of Error frames
+                //
+                case 19:
+                    stsResult = PCANBasic.GetValue(m_PcanHandle, TPCANParameter.PCAN_ALLOW_ERROR_FRAMES, out iBuffer, sizeof(UInt32));
+                    if (stsResult == TPCANStatus.PCAN_ERROR_OK)
+                        IncludeTextMessage(string.Format("The reception of Error frames is {0}", (iBuffer == PCANBasic.PCAN_PARAMETER_ON) ? "enabled" : "disabled"));
+                    break;
+                // The Interframe delay of an USB channel will be retrieved
+                //
+                case 20:
+                    stsResult = PCANBasic.GetValue(m_PcanHandle, TPCANParameter.PCAN_INTERFRAME_DELAY, out iBuffer, sizeof(UInt32));
+                    if (stsResult == TPCANStatus.PCAN_ERROR_OK)
+                        IncludeTextMessage(string.Format("The configured interframe delay is {0} μs", iBuffer));
                     break;
                 // The current parameter is invalid
                 //

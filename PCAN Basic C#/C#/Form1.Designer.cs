@@ -61,8 +61,8 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.btnParameterGet = new System.Windows.Forms.Button();
             this.label10 = new System.Windows.Forms.Label();
-            this.nudDeviceId = new System.Windows.Forms.NumericUpDown();
-            this.label9 = new System.Windows.Forms.Label();
+            this.nudDeviceIdOrDelay = new System.Windows.Forms.NumericUpDown();
+            this.laDeviceOrDelay = new System.Windows.Forms.Label();
             this.cbbParameter = new System.Windows.Forms.ComboBox();
             this.label6 = new System.Windows.Forms.Label();
             this.rdbParamActive = new System.Windows.Forms.RadioButton();
@@ -171,7 +171,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudIdTo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudIdFrom)).BeginInit();
             this.groupBox2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudDeviceId)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudDeviceIdOrDelay)).BeginInit();
             this.groupBox4.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.groupBox6.SuspendLayout();
@@ -596,8 +596,8 @@
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox2.Controls.Add(this.btnParameterGet);
             this.groupBox2.Controls.Add(this.label10);
-            this.groupBox2.Controls.Add(this.nudDeviceId);
-            this.groupBox2.Controls.Add(this.label9);
+            this.groupBox2.Controls.Add(this.nudDeviceIdOrDelay);
+            this.groupBox2.Controls.Add(this.laDeviceOrDelay);
             this.groupBox2.Controls.Add(this.cbbParameter);
             this.groupBox2.Controls.Add(this.label6);
             this.groupBox2.Controls.Add(this.rdbParamActive);
@@ -630,26 +630,26 @@
             this.label10.TabIndex = 46;
             this.label10.Text = "Activation:";
             // 
-            // nudDeviceId
+            // nudDeviceIdOrDelay
             // 
-            this.nudDeviceId.Enabled = false;
-            this.nudDeviceId.Location = new System.Drawing.Point(408, 29);
-            this.nudDeviceId.Maximum = new decimal(new int[] {
+            this.nudDeviceIdOrDelay.Enabled = false;
+            this.nudDeviceIdOrDelay.Location = new System.Drawing.Point(408, 29);
+            this.nudDeviceIdOrDelay.Maximum = new decimal(new int[] {
             -1,
             0,
             0,
             0});
-            this.nudDeviceId.Name = "nudDeviceId";
-            this.nudDeviceId.Size = new System.Drawing.Size(99, 20);
-            this.nudDeviceId.TabIndex = 6;
+            this.nudDeviceIdOrDelay.Name = "nudDeviceIdOrDelay";
+            this.nudDeviceIdOrDelay.Size = new System.Drawing.Size(99, 20);
+            this.nudDeviceIdOrDelay.TabIndex = 6;
             // 
-            // label9
+            // laDeviceOrDelay
             // 
-            this.label9.Location = new System.Drawing.Point(405, 12);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(59, 23);
-            this.label9.TabIndex = 45;
-            this.label9.Text = "Device ID:";
+            this.laDeviceOrDelay.Location = new System.Drawing.Point(405, 12);
+            this.laDeviceOrDelay.Name = "laDeviceOrDelay";
+            this.laDeviceOrDelay.Size = new System.Drawing.Size(59, 23);
+            this.laDeviceOrDelay.TabIndex = 45;
+            this.laDeviceOrDelay.Text = "Device ID:";
             // 
             // cbbParameter
             // 
@@ -665,14 +665,18 @@
             "CAN Controller Number",
             "Trace File",
             "Channel Identification (USB)",
-            "FD Capability",
+            "Channel Capabilities",
             "Bit rate Adaptation",
             "Get Bit rate Information",
             "Get Bit rate FD Information",
             "Get CAN Nominal Speed Bit/s",
             "Get CAN Data Speed Bit/s",
             "Get IP Address",
-            "Get LAN Service Status"});
+            "Get LAN Service Status",
+            "Reception of Status Frames",
+            "Reception of RTR Frames",
+            "Reception of Error Frames",
+            "Interframe Transmit Delay"});
             this.cbbParameter.Location = new System.Drawing.Point(10, 31);
             this.cbbParameter.Name = "cbbParameter";
             this.cbbParameter.Size = new System.Drawing.Size(217, 21);
@@ -2077,7 +2081,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudIdTo)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudIdFrom)).EndInit();
             this.groupBox2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.nudDeviceId)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudDeviceIdOrDelay)).EndInit();
             this.groupBox4.ResumeLayout(false);
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
@@ -2112,8 +2116,8 @@
         private System.Windows.Forms.RadioButton rdbParamInactive;
         private System.Windows.Forms.ComboBox cbbParameter;
         private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.NumericUpDown nudDeviceId;
-        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.NumericUpDown nudDeviceIdOrDelay;
+        private System.Windows.Forms.Label laDeviceOrDelay;
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.RadioButton rdbEvent;
