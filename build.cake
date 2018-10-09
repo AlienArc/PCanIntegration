@@ -14,7 +14,6 @@ var targetPath = Argument("targetPath", @".\nuget");
 ///////////////////////////////////////////////////////////////////////////////
 
 var solution = @".\AlienArc.PCanIntegration.sln";
-var csproj = @".\AlienArc.PCanIntegration\AlienArc.PCanIntegration.csproj";
 var nuspec = @".\AlienArc.PCanIntegration\AlienArc.PCanIntegration.nuspec";
 var pcanVersionFile = @".\PCanBasicVersion.txt";
 
@@ -31,8 +30,15 @@ Teardown(ctx =>
 ///////////////////////////////////////////////////////////////////////////////
 // TASKS
 ///////////////////////////////////////////////////////////////////////////////
+Task("Clean")
+    .Does(() =>
+{
+    CleanDirectories("./**/obj");
+    CleanDirectories("./**/bin");
+});
 
 Task("RestorePackages")
+    .IsDependentOn("Clean")
 .Does(() => {
     NuGetRestore(solution);
 });
@@ -45,12 +51,14 @@ Task("Build")
     var fullVersion = $"{pcanVersion}.{buildNumber}";
     var nugetVersion = $"{pcanVersion.Substring(0, pcanVersion.LastIndexOf("."))}.{buildNumber}";
 
-    MSBuild(csproj, c => 
+    Information($"using version: {fullVersion}");
+
+    MSBuild(solution, c => 
         c.WithProperty("Platform", "x86")
         .WithProperty("Configuration", configuration)
         .WithProperty("VersionAssembly", fullVersion)
     );
-    MSBuild(csproj, c => 
+    MSBuild(solution, c => 
         c.WithProperty("Platform", "x64")
         .WithProperty("Configuration", configuration)
         .WithProperty("VersionAssembly", fullVersion)
@@ -63,7 +71,8 @@ Task("Build")
 });
 
 Task("Default")
-    .IsDependentOn("RestorePackages")
     .IsDependentOn("Build");
 
 RunTarget(target);
+
+// Test: .\build.ps1 -target "Default" -verbosity normal --buildNumber=11
