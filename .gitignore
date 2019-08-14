@@ -254,3 +254,6 @@ ModelManifest.xml
 #CAKE
 tools/*
 !tools/packages.config
+
+#MFractor
+.mfractor/

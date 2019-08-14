@@ -13,9 +13,9 @@ var targetPath = Argument("targetPath", @".\nuget");
 // SETUP / TEARDOWN
 ///////////////////////////////////////////////////////////////////////////////
 
-var solution = @".\AlienArc.PCanIntegration.sln";
-var nuspec = @".\AlienArc.PCanIntegration\AlienArc.PCanIntegration.nuspec";
-var pcanVersionFile = @".\PCanBasicVersion.txt";
+var solution = @"./AlienArc.PCanIntegration.sln";
+var nuspec = @"./AlienArc.PCanIntegration/AlienArc.PCanIntegration.nuspec";
+var pcanVersionFile = @"./PCanBasicVersion.txt";
 
 Setup(ctx =>
 {
