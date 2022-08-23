@@ -1,4 +1,4 @@
-#addin "nuget:?package=NuGet.Core"
+//#addin "nuget:?package=NuGet.Core"
 
 ///////////////////////////////////////////////////////////////////////////////
 // ARGUMENTS
@@ -55,11 +55,13 @@ Task("Build")
 
     MSBuild(solution, c => 
         c.WithProperty("Platform", "x86")
+        //c.SetMSBuildPlatform(MSBuildPlatform.x86)
         .WithProperty("Configuration", configuration)
         .WithProperty("VersionAssembly", fullVersion)
     );
     MSBuild(solution, c => 
         c.WithProperty("Platform", "x64")
+        //c.SetMSBuildPlatform(MSBuildPlatform.x64)
         .WithProperty("Configuration", configuration)
         .WithProperty("VersionAssembly", fullVersion)
     );
@@ -76,3 +78,4 @@ Task("Default")
 RunTarget(target);
 
 // Test: .\build.ps1 -target "Default" -verbosity normal --buildNumber=11
+// Test: dotnet cake .\build.cake -verbosity normal --buildNumber=11

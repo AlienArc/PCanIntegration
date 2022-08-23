@@ -16,11 +16,11 @@
     <file src="..\ThirdParty\x64\PCANBasic.dll" target="binaries\x64\PCANBasic.dll" />
     <file src="..\ThirdParty\Win32\PCANBasic.dll" target="binaries\x86\PCANBasic.dll" />
 
-		<file src="AlienArc.PCanIntegration.targets" target="build\net45" />
-	  <file src="AlienArc.PCanIntegration.props" target="build\net45" />
+		<file src="AlienArc.PCanIntegration.targets" target="build\net6.0" />
+	  <file src="AlienArc.PCanIntegration.props" target="build\net6.0" />
 
-    <file src="bin\Release\x64\AlienArc.PCanIntegration.*" target="build\x64" />
-    <file src="bin\Release\x86\AlienArc.PCanIntegration.*" target="build\x86" />
+    <file src="bin\Release\x64\net6.0-windows\AlienArc.PCanIntegration.*" target="build\x64" />
+    <file src="bin\Release\x86\net6.0-windows\AlienArc.PCanIntegration.*" target="build\x86" />
     <!--<file src="bin\Release\x86\AlienArc.PCanIntegration.*" target="lib\net45" />-->
 
 	</files>
